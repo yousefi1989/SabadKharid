@@ -41,7 +41,7 @@ class CZARINPALWG extends PaymentModule{
 		$order_amount = round(100*$order["order_amount"] * $PAcurr_rate)/100;
 		$modID =  $this ->get_id();
 		
-		$soapclient = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl');
+		$soapclient = new SoapClient('https://de.zarinpal.com/pg/services/WebGate/wsdl');
 		$amount = $order_amount;  // here is the posted amount
 
 		$callbackUrl = CONF_FULL_SHOP_URL."?ZARINPAL&modID=$modID&pay=1";
