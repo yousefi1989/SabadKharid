@@ -35,7 +35,7 @@
 				if ($orderID && $_GET['Status'] == "OK") {
 					$order['order_amount'] = round($order['order_amount']);
 
-					$soapclient = new SoapClient('https://www.zarinpal.com/pg/services/WebGate/wsdl');
+					$soapclient = new SoapClient('https://de.zarinpal.com/pg/services/WebGate/wsdl');
 
 						  $res = $soapclient->PaymentVerification(
 						  array(
