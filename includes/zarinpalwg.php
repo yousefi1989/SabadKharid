@@ -10,19 +10,20 @@
 
 	if ( isset($_GET['ZARINPAL'] ))
 	{
-		if (isset($_GET['modID']) && isset($_POST['Authority'])) {
+
+		if (isset($_GET['modID']) && isset($_GET['Authority'])) {
 			
-		$modID = $_GET['modID'];
-		$authority = $_GET['Authority'];
-		$orderID = ordGetordIDbyRefnum($authority);
-		$q = db_query("SELECT * FROM ".SETTINGS_TABLE." WHERE settings_constant_name='CONF_PAYMENTMODULE_ZARINPAL_MERCHANT_ACCOUNT_$modID'");
-		$res = db_fetch_row($q);
-		$comStatID = _getSettingOptionValue('CONF_COMPLETED_ORDER_STATUS');
+			$modID = $_GET['modID'];
+			$authority = $_GET['Authority'];
+			$orderID = ordGetordIDbyRefnum($authority);
+			$q = db_query("SELECT * FROM ".SETTINGS_TABLE." WHERE settings_constant_name='CONF_PAYMENTMODULE_ZARINPAL_MERCHANT_ACCOUNT_$modID'");
+			$res = db_fetch_row($q);
+			$comStatID = _getSettingOptionValue('CONF_COMPLETED_ORDER_STATUS');
+				
 			
-		
-		if(!empty($res['settings_value'])){
-			$mid = $res['settings_value'];
-			}else{
+			if (!empty($res['settings_value'])) {
+				$mid = $res['settings_value'];
+			} else {
 				Redirect( "index.php" );
 			}
 		
@@ -37,7 +38,7 @@
 
 					$soapclient = new SoapClient('https://de.zarinpal.com/pg/services/WebGate/wsdl');
 
-						  $res = $soapclient->PaymentVerification(
+						  $result = $soapclient->PaymentVerification(
 						  array(
 								'MerchantID'	 => $mid ,
 								'Authority' 	 => $authority ,
@@ -45,8 +46,7 @@
 								)
 						  
 						  );
-					
-						  if ($res->status == 100 ) {
+						  if ($result->Status == 100 ) {
 								// this is a succcessfull payment
 
 								$pininfo = ostSetOrderStatusToOrder($orderID, $comStatID, 'Your Online Payment with ZARINPAL gateway accepted', 1);
