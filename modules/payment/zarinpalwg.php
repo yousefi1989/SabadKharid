@@ -44,25 +44,25 @@ class CZARINPALWG extends PaymentModule{
 		$soapclient = new SoapClient('https://de.zarinpal.com/pg/services/WebGate/wsdl');
 		$amount = $order_amount;  // here is the posted amount
 
-		$callbackUrl = CONF_FULL_SHOP_URL."?ZARINPAL&modID=$modID&pay=1";
+		$callbackUrl = CONF_FULL_SHOP_URL."?zarinpalwg&modID=$modID&pay=1";
 		$pin = $this->_getSettingValue('CONF_PAYMENTMODULE_ZARINPAL_MERCHANT_ACCOUNT');
 
 		$res = $soapclient->PaymentRequest(
 		array(
 					'MerchantID' 	=> $pin ,
 					'Amount' 		=> $amount ,
-					'Description' 	=> urlencode('پرداخت سفارش شماره: '.$orderID) ,
+					'Description' 	=> 'پرداخت سفارش شماره: '.$orderID ,
 					'Email' 		=> '' ,
 					'Mobile' 		=> '' ,
-					'CallbackURL' 	=> $callBackUrl
+					'CallbackURL' 	=> $callbackUrl
 					)
 		
 		 );
 
 		if ( $res->Status == 100 ) {
 		   // this is a succcessfull connection
-			db_query( "update ".ORDERS_TABLE." set refnum='".$res."' where orderID='".$orderID."'");
-			$parsURL = "https://www.zarinpal.com/pg/StartPay/" . $result->Authority . "/" ;
+			db_query( "update ".ORDERS_TABLE." set refnum='".$res->Authority."' where orderID='".$orderID."'");
+			$parsURL = "https://www.zarinpal.com/pg/StartPay/" . $res->Authority . "/" ;
 			header("Location:". $parsURL) ;
 			exit() ;
 			die() ;
@@ -71,10 +71,13 @@ class CZARINPALWG extends PaymentModule{
 		} else {
 		   // this is unsucccessfull connection
 			echo "<p align=center>
-					err<br />
+					err1<br />
 					$res->Status <br />
 					$orderID <br />
 					UNSUCCSESSFUL!
+					$pin <br />
+					$amount <br />
+					$callbackUrl <br />
 				  </p>";
 
 		}
