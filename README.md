@@ -1,2 +1,2 @@
-WebGate-SabadKharid-Soap
-========================
+ZarinGate-SabadKharid-Soap
+==========================
