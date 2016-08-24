@@ -12,12 +12,12 @@
  *
  */
 
-class CZARINPALWG extends PaymentModule{
+class CZARINPALZG extends PaymentModule{
 	
 	function _initVars(){
 		
-		$this->title 		= CZARINPALWG_TTL;
-		$this->description 	= CZARINPALWG_DSCR;
+		$this->title 		= CZARINPALZG_TTL;
+		$this->description 	= CZARINPALZG_DSCR;
 		$this->sort_order 	= 1;
 		$this->Settings = array( 
 			"CONF_PAYMENTMODULE_ZARINPAL_MERCHANT_ACCOUNT",
@@ -44,7 +44,7 @@ class CZARINPALWG extends PaymentModule{
 		$soapclient = new SoapClient('https://de.zarinpal.com/pg/services/WebGate/wsdl');
 		$amount = $order_amount;  // here is the posted amount
 
-		$callbackUrl = CONF_FULL_SHOP_URL."?zarinpalwg&modID=$modID&pay=1";
+		$callbackUrl = CONF_FULL_SHOP_URL."?zarinpalzg&modID=$modID&pay=1";
 		$pin = $this->_getSettingValue('CONF_PAYMENTMODULE_ZARINPAL_MERCHANT_ACCOUNT');
 
 		$res = $soapclient->PaymentRequest(
@@ -62,7 +62,7 @@ class CZARINPALWG extends PaymentModule{
 		if ( $res->Status == 100 ) {
 		   // this is a succcessfull connection
 			db_query( "update ".ORDERS_TABLE." set refnum='".$res->Authority."' where orderID='".$orderID."'");
-			$parsURL = "https://www.zarinpal.com/pg/StartPay/" . $res->Authority . "/" ;
+			$parsURL = "https://www.zarinpal.com/pg/StartPay/" . $res->Authority ;
 			header("Location:". $parsURL) ;
 			exit() ;
 			die() ;
@@ -71,7 +71,7 @@ class CZARINPALWG extends PaymentModule{
 		} else {
 		   // this is unsucccessfull connection
 			echo "<p align=center>
-					err1<br />
+					err2<br />
 					$res->Status <br />
 					$orderID <br />
 					UNSUCCSESSFUL!
@@ -87,16 +87,16 @@ class CZARINPALWG extends PaymentModule{
 		
 		$this->SettingsFields['CONF_PAYMENTMODULE_ZARINPAL_MERCHANT_ACCOUNT'] = array(
 			'settings_value' 		=> '', 
-			'settings_title' 			=> CZARINPALWG_CFG_MERCHANT_ACCOUNT_TTL, 
-			'settings_description' 	=> CZARINPALWG_CFG_MERCHANT_ACCOUNT_DSCR, 
+			'settings_title' 			=> CZARINPALZG_CFG_MERCHANT_ACCOUNT_TTL, 
+			'settings_description' 	=> CZARINPALZG_CFG_MERCHANT_ACCOUNT_DSCR, 
 			'settings_html_function' 	=> 'setting_TEXT_BOX(0,', 
 			'sort_order' 			=> 1,
 		);
 
 		$this->SettingsFields['CONF_PAYMENTMODULE_ZARINPAL_RIAL_CURRENCY'] = array(
 			'settings_value' 		=> '0', 
-			'settings_title' 			=> CZARINPALWG_CFG_RIAL_CURRENCY_TTL, 
-			'settings_description' 	=> CZARINPALWG_CFG_RIAL_CURRENCY_DSCR, 
+			'settings_title' 			=> CZARINPALZG_CFG_RIAL_CURRENCY_TTL, 
+			'settings_description' 	=> CZARINPALZG_CFG_RIAL_CURRENCY_DSCR, 
 			'settings_html_function' 	=> 'setting_CURRENCY_SELECT(', 
 			'sort_order' 			=> 1,
 		);
