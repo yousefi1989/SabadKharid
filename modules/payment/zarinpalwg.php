@@ -2,7 +2,7 @@
 /*****************************************************************************
  *                                                                           *
  * Zarinpal Payment Gateway                                                  *
- * Copyright (c) 2008 . All rights reserved.                                 *
+ * Copyright (c) 2009 . All rights reserved.                                 *
  *                                                                           *
  *****************************************************************************/
 	// ZARINPAL payment module
