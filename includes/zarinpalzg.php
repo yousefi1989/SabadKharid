@@ -8,7 +8,7 @@
 
 	// show aux page
 
-	if ( isset($_GET['ZARINPAL'] ))
+	if ( isset($_GET['zarinpalzg'] ))
 	{
 
 		if (isset($_GET['modID']) && isset($_GET['Authority'])) {
